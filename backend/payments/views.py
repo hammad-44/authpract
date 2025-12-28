@@ -80,6 +80,7 @@ class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
 class SubscriptionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = SubscriptionSerializer
+    lookup_field = 'subscription_id'
 
     def get_queryset(self):
         return Subscription.objects.filter(user=self.request.user)
