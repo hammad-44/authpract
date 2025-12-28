@@ -94,8 +94,7 @@ DATABASES = {
         'HOST': 'auth-net-db-19857.j77.aws-ap-south-1.cockroachlabs.cloud',
         'PORT': 26257,
         'OPTIONS': {
-            'sslmode': 'verify-full',
-            'sslrootcert': 'system',
+            'sslmode': 'require',
         },
     }
 }
