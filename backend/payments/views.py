@@ -167,7 +167,7 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request, *args, **kwargs):
         subscription = self.get_object()
         service = AuthorizeNetService()
         
