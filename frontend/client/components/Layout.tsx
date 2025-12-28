@@ -26,7 +26,7 @@ export function Layout({ children }: LayoutProps) {
   const navItems = [
     { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { path: "/products", label: "Products", icon: ShoppingCart },
-    { path: "/pricing", label: "Pricing", icon: CreditCard },
+    { path: "/pricing", label: "Subscriptions", icon: CreditCard },
     { path: "/history", label: "History", icon: Clock },
   ];
 
@@ -41,7 +41,6 @@ export function Layout({ children }: LayoutProps) {
           <h1 className="text-2xl font-bold text-sidebar-foreground">
             Auth<span className="text-sidebar-primary">Pay</span>
           </h1>
-          <p className="text-xs text-muted-foreground mt-1">Payment Testing</p>
         </div>
 
         {/* Navigation */}
@@ -52,14 +51,18 @@ export function Layout({ children }: LayoutProps) {
             return (
               <Link key={item.path} to={item.path}>
                 <div
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                    active
-                      ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                  }`}
+                  className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 group relative ${active
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-lg shadow-sidebar-primary/20 translate-x-1"
+                    : "text-sidebar-foreground/50 hover:bg-sidebar-accent/10 hover:text-sidebar-foreground"
+                    }`}
                 >
-                  <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.label}</span>
+                  <Icon className={`w-5 h-5 transition-all duration-300 ${active ? "scale-110" : "group-hover:scale-110 group-hover:text-sidebar-primary"}`} />
+                  <span className={`text-xs font-black uppercase tracking-[0.15em] ${active ? "" : "opacity-60 group-hover:opacity-100"}`}>
+                    {item.label}
+                  </span>
+                  {active && (
+                    <div className="absolute right-4 w-1.5 h-1.5 rounded-full bg-sidebar-primary-foreground shadow-[0_0_10px_rgba(255,255,255,0.5)]" />
+                  )}
                 </div>
               </Link>
             );
@@ -80,9 +83,8 @@ export function Layout({ children }: LayoutProps) {
         {/* Top Header */}
         <header className="bg-background border-b border-border px-8 py-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-foreground">
-            Authorized Payment Testing
+            Authorized Payment Practice
           </h2>
-          <div className="text-sm text-muted-foreground">Welcome back!</div>
         </header>
 
         {/* Content Area */}

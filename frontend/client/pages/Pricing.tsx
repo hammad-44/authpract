@@ -164,7 +164,7 @@ export default function Pricing() {
 
   return (
     <Layout>
-      <div className="space-y-8">
+      <div className="flex flex-col justify-center items-center space-y-8">
         <div className="text-center max-w-2xl mx-auto">
           <h1 className="text-3xl font-bold text-foreground mb-4">
             Simple, Transparent Pricing
@@ -220,9 +220,9 @@ export default function Pricing() {
         </div>
 
         <div className="border-t border-gray-200 pt-10">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="flex justify-center items-center gap-8">
             {/* Subscription Form */}
-            <div className="lg:col-span-2 lg:col-start-2">
+            <div className="">
               <Card className="border-slate-200 bg-white shadow-2xl rounded-2xl overflow-hidden">
                 <CardHeader className="bg-slate-50 border-b border-slate-100 pb-8">
                   <CardTitle className="text-slate-900 text-2xl font-bold">Checkout Details</CardTitle>

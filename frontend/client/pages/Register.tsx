@@ -74,7 +74,6 @@ export default function Register() {
         </div>
 
         <div className="text-primary-100 text-sm">
-          © 2024 AuthPay. All rights reserved.
         </div>
       </div>
 
