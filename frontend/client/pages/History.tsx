@@ -16,7 +16,6 @@ interface HistoryState {
   transactions: Transaction[];
   subscriptions: Subscription[];
   loading: boolean;
-  cancellingId: string | null;
 }
 
 export default function History() {
@@ -24,7 +23,6 @@ export default function History() {
     transactions: [],
     subscriptions: [],
     loading: true,
-    cancellingId: null,
   });
 
   useEffect(() => {
@@ -50,24 +48,7 @@ export default function History() {
     fetchData();
   }, []);
 
-  const handleCancelSubscription = async (id: string) => {
-    setState((prev) => ({ ...prev, cancellingId: id }));
 
-    try {
-      await paymentsAPI.cancelSubscription(id);
-      toast.success("Subscription cancelled");
-      setState((prev) => ({
-        ...prev,
-        subscriptions: prev.subscriptions.filter((s) => s.id !== id),
-        cancellingId: null,
-      }));
-    } catch (error: any) {
-      toast.error(
-        error.response?.data?.message || "Failed to cancel subscription",
-      );
-      setState((prev) => ({ ...prev, cancellingId: null }));
-    }
-  };
 
   if (state.loading) {
     return (
@@ -240,25 +221,7 @@ export default function History() {
                       </div>
                     </div>
 
-                    <Button
-                      onClick={() => handleCancelSubscription(subscription.id)}
-                      disabled={state.cancellingId === subscription.id}
-                      variant="destructive"
-                      size="sm"
-                      className="w-full"
-                    >
-                      {state.cancellingId === subscription.id ? (
-                        <>
-                          <span className="animate-spin mr-2">⏳</span>
-                          Cancelling...
-                        </>
-                      ) : (
-                        <>
-                          <Trash2 className="w-4 h-4 mr-2" />
-                          Cancel Subscription
-                        </>
-                      )}
-                    </Button>
+
                   </div>
                 ))}
               </div>
