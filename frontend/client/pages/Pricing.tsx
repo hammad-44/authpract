@@ -91,7 +91,7 @@ export default function Pricing() {
     };
 
     const cardData = {
-      cardNumber: (document.getElementById('cardNumber') as HTMLInputElement).value,
+      cardNumber: (document.getElementById('cardNumber') as HTMLInputElement).value.replace(/\s+/g, '').replace(/-/g, ''),
       month: (document.getElementById('expMonth') as HTMLInputElement).value,
       year: (document.getElementById('expYear') as HTMLInputElement).value,
       cardCode: (document.getElementById('cardCode') as HTMLInputElement).value,
