@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Transaction, Subscription, SubscriptionPayment, Product, SubscriptionPlan
 
 class TransactionSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
     class Meta:
         model = Transaction
         fields = '__all__'
@@ -13,6 +14,7 @@ class CreatePaymentSerializer(serializers.Serializer):
     descriptor = serializers.CharField(max_length=255, required=False)
 
 class SubscriptionSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
     class Meta:
         model = Subscription
         fields = '__all__'

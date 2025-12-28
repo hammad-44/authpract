@@ -36,7 +36,7 @@ export interface ChargeResponse {
 }
 
 export interface Transaction {
-  id: number;
+  id: string;
   transaction_id: string;
   amount: number;
   status: "authorized" | "captured" | "failed";
@@ -60,6 +60,7 @@ export interface SubscriptionRequest {
 
 export interface Subscription {
   id: string;
+  subscription_id: string;
   name: string;
   amount: number;
   interval_length: number;
