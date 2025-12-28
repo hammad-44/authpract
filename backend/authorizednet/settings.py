@@ -137,7 +137,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+WHITENOISE_USE_FINDERS = True  # Added to ensure static files are found without collectstatic
+WHITENOISE_AUTOREFRESH = True
+
 
 # CORS Settings
 CORS_ALLOW_ALL_ORIGINS = True
