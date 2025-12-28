@@ -95,6 +95,7 @@ DATABASES = {
         'PORT': 26257,
         'OPTIONS': {
             'sslmode': 'verify-full',
+            'sslrootcert': 'system',
         },
     }
 }
