@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosError } from "axios";
 import { getAccessToken, setTokens, clearTokens } from "@/utils/auth";
 
-const API_BASE_URL = "/api/payments";
+const API_BASE_URL = "https://authpract-backend.vercel.app/api/payments";
 
 export interface LoginRequest {
   username: string;
