@@ -27,13 +27,23 @@ class AuthorizeNetService:
     def _send_request(self, data):
         headers = {'Content-Type': 'application/json'}
         try:
-            response = requests.post(self.api_url, data=json.dumps(data), headers=headers)
+            json_data = json.dumps(data)
+            logger.debug(f"Authorize.Net Request URL: {self.api_url}")
+            logger.debug(f"Authorize.Net Request Data: {json_data}")
+            
+            response = requests.post(self.api_url, data=json_data, headers=headers)
             response.raise_for_status()
+            
             # The API returns a byte string with BOM sometimes, strip it
             content = response.text.lstrip('\ufeff')
-            return json.loads(content)
+            response_json = json.loads(content)
+            
+            logger.debug(f"Authorize.Net Response: {json.dumps(response_json)}")
+            return response_json
         except Exception as e:
             logger.error(f"Authorize.Net API Error: {str(e)}")
+            if hasattr(e, 'response') and e.response:
+                logger.error(f"Response content: {e.response.text}")
             return None
 
     def create_transaction(self, amount, nonce, descriptor=None):

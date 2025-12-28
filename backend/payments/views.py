@@ -112,7 +112,7 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
                      details = "Unknown Error"
                      if response:
                          details = response['messages']['message'][0]['text']
-                     return Response({"error": "Failed to create customer profile", "details": details}, status=400)
+                     return Response({"message": f"Failed to create customer profile: {details}"}, status=400)
             else:
                 # User exists. Create a new payment profile for this subscription.
                 pp_response = service.create_customer_payment_profile(
@@ -125,22 +125,16 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
                 if pp_response and pp_response['messages']['resultCode'] == "Ok":
                      if 'customerPaymentProfileId' in pp_response:
                         customer_payment_profile_id = pp_response['customerPaymentProfileId']
-                     # Sometimes it returns a validation error but still creates it or similar edge cases, 
-                     # but here we rely on success.
                 else:
                      details = "Unknown Error"
                      if pp_response:
                          details = pp_response['messages']['message'][0]['text']
-                     # Verify if duplicate error (E00039) - then we might need to look up existing profiles, 
-                     # but for now we assume a new card nonce means we want to add it.
-                     return Response({"error": "Failed to create payment profile", "details": details}, status=400)
+                     return Response({"message": f"Failed to create payment profile: {details}"}, status=400)
 
 
             # 2. Create Subscription
-            # Ensure we have a payment profile ID. If we just created the user w/ payment, we have it.
-            # If we didn't, we need to handle that.
             if not customer_payment_profile_id:
-                 return Response({"error": "Payment profile logic not fully covered for existing users in this demo step"}, status=400)
+                 return Response({"message": "Payment profile ID not found."}, status=400)
 
             sub_response = service.create_subscription(
                 name=serializer.validated_data['name'],
@@ -168,24 +162,27 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
                  details = "Unknown Error"
                  if sub_response:
                      details = sub_response['messages']['message'][0]['text']
-                 return Response({"error": "Failed to create subscription", "details": details}, status=400)
+                 return Response({"message": f"Failed to create subscription: {details}"}, status=400)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         subscription = self.get_object()
         service = AuthorizeNetService()
+        
+        logger.info(f"Attempting to cancel subscription: {subscription.subscription_id}")
         response = service.cancel_subscription(subscription.subscription_id)
         
         if response and response['messages']['resultCode'] == "Ok":
             subscription.status = 'canceled'
             subscription.save()
-            return Response({"status": "Subscription canceled"})
+            return Response({"status": "Subscription canceled", "message": "Subscription canceled successfully"})
         else:
              details = "Unknown Error"
              if response:
                  details = response['messages']['message'][0]['text']
-             return Response({"error": "Failed to cancel", "details": details}, status=400)
+             logger.error(f"Failed to cancel subscription {subscription.subscription_id}: {details}")
+             return Response({"message": f"Failed to cancel subscription: {details}"}, status=400)
 
 
 # Simple Registration View
