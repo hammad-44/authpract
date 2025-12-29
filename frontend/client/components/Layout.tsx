@@ -6,9 +6,26 @@ import {
   ShoppingCart,
   CreditCard,
   Clock,
+  Menu,
 } from "lucide-react";
 import { clearTokens } from "@/utils/auth";
 import { Button } from "@/components/ui/button";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+  SidebarInset,
+} from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
 
 interface LayoutProps {
   children: ReactNode;
@@ -33,65 +50,65 @@ export function Layout({ children }: LayoutProps) {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar */}
-      <aside className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col">
-        {/* Logo */}
-        <div className="p-6 border-b border-sidebar-border">
-          <h1 className="text-2xl font-bold text-sidebar-foreground">
+    <SidebarProvider>
+      <Sidebar className="border-r border-sidebar-border">
+        <SidebarHeader className="border-b border-sidebar-border p-4">
+          <h1 className="text-2xl font-bold text-sidebar-foreground px-2">
             Auth<span className="text-sidebar-primary">Pay</span>
           </h1>
-        </div>
+        </SidebarHeader>
 
-        {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const active = isActive(item.path);
-            return (
-              <Link key={item.path} to={item.path}>
-                <div
-                  className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 group relative ${active
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-lg shadow-sidebar-primary/20 translate-x-1"
-                    : "text-sidebar-foreground/50 hover:bg-sidebar-accent/10 hover:text-sidebar-foreground"
-                    }`}
-                >
-                  <Icon className={`w-5 h-5 transition-all duration-300 ${active ? "scale-110" : "group-hover:scale-110 group-hover:text-sidebar-primary"}`} />
-                  <span className={`text-xs font-black uppercase tracking-[0.15em] ${active ? "" : "opacity-60 group-hover:opacity-100"}`}>
-                    {item.label}
-                  </span>
-                  {active && (
-                    <div className="absolute right-4 w-1.5 h-1.5 rounded-full bg-sidebar-primary-foreground shadow-[0_0_10px_rgba(255,255,255,0.5)]" />
-                  )}
-                </div>
-              </Link>
-            );
-          })}
-        </nav>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Menu</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {navItems.map((item) => (
+                  <SidebarMenuItem key={item.path}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive(item.path)}
+                      tooltip={item.label}
+                      className="h-12"
+                    >
+                      <Link to={item.path}>
+                        <item.icon />
+                        <span className="font-medium">{item.label}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
 
-        {/* Logout */}
-        <div className="p-4 border-t border-sidebar-border">
-          <Button onClick={handleLogout} variant="outline" className="w-full">
-            <LogOut className="w-4 h-4 mr-2" />
-            Logout
-          </Button>
-        </div>
-      </aside>
+        <SidebarFooter className="border-t border-sidebar-border p-4">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild onClick={handleLogout} className="h-10 hover:bg-destructive/10 hover:text-destructive">
+                <button>
+                  <LogOut />
+                  <span>Logout</span>
+                </button>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
+      </Sidebar>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Top Header */}
-        <header className="bg-background border-b border-border px-8 py-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-foreground">
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-background z-10 sticky top-0">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <h2 className="text-lg font-semibold text-foreground">
             Authorized Payment Practice
           </h2>
         </header>
-
-        {/* Content Area */}
-        <main className="flex-1 overflow-auto p-8 bg-background">
+        <main className="flex-1 overflow-auto p-4 md:p-8 bg-background">
           {children}
         </main>
-      </div>
-    </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

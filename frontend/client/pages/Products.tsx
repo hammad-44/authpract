@@ -143,7 +143,7 @@ export default function Products() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Payment Form */}
-          <div className="lg:col-span-1 border-r border-border pr-6 lg:block hidden sticky top-8 h-fit">
+          <div className="lg:col-span-1 lg:border-r border-border lg:pr-6 order-2 lg:order-1 lg:sticky lg:top-8 h-fit">
             <Card className="border-border bg-background shadow-lg">
               <CardHeader>
                 <CardTitle className="text-foreground">Checkout</CardTitle>
@@ -202,7 +202,7 @@ export default function Products() {
           </div>
 
           {/* Product Grid */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 order-1 lg:order-2">
             <h2 className="text-xl font-semibold mb-4 text-foreground flex items-center">
               <ShoppingBag className="mr-2 h-5 w-5 text-indigo-500" />
               Available Products
@@ -243,48 +243,7 @@ export default function Products() {
             {/* Fallback Manual Form for Mobile (if needed) or simple layout adjustments */}
           </div>
 
-          {/* Mobile Payment Form (visible only on small screens) */}
-          <div className="lg:hidden col-span-1">
-            {/* ... replicate form or better, use CSS order to float it ... */}
-            {/* For simplicity in this edit, assuming user scrolls up to the sticky sidebar on desktop, 
-                 or we just render the form at bottom for mobile. */}
-            <Card className="border-border bg-background shadow-lg mt-8">
-              <CardHeader>
-                <CardTitle className="text-foreground">Checkout</CardTitle>
-                <CardDescription>Securely process your payment</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handlePayment} className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="amount_mobile" className="text-foreground">Amount (USD)</Label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-2.5 text-muted-foreground">$</span>
-                      <Input
-                        id="amount_mobile"
-                        type="number"
-                        step="0.01"
-                        className="pl-8"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="descriptor_mobile" className="text-foreground">Description</Label>
-                    <Input
-                      id="descriptor_mobile"
-                      value={descriptor}
-                      onChange={(e) => setDescriptor(e.target.value)}
-                    />
-                  </div>
-                  <Button type="submit" disabled={loading || !acceptLoaded} className="w-full bg-indigo-600 hover:bg-indigo-700">
-                    {loading ? <Loader className="animate-spin mr-2 h-4 w-4" /> : <CreditCard className="mr-2 h-4 w-4" />}
-                    Pay Now
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
+
 
         </div>
       </div>
